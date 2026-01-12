@@ -1,5 +1,61 @@
 ---
 title: "Quarto 1"
 format: html
+execute: 
+  echo: false
 ---
 
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+library(palmerpenguins)
+```
+
+
+```{r}
+penguins
+```
+
+
+```{r}
+# Install packages if you haven't already
+# install.packages("ggplot2")
+# install.packages("palmerpenguins")
+
+library(ggplot2)
+library(palmerpenguins)
+
+# Clean the data (removing NAs for a cleaner plot)
+penguins_clean <- na.omit(penguins)
+
+# Create the visualization
+ggplot(data = penguins_clean, 
+       aes(x = bill_length_mm, 
+           y = body_mass_g, 
+           color = species, 
+           shape = species)) +
+  # Add points with transparency to handle overlap
+  geom_point(size = 3, alpha = 0.8) +
+  # Add smooth trend lines for each species
+  geom_smooth(method = "lm", se = FALSE, size = 1.2) +
+  # Use a clean, modern theme
+  theme_minimal() +
+  # Custom colors for a "beautiful" look
+  scale_color_manual(values = c("Adelie" = "#FF8C00", 
+                                "Chinstrap" = "#9932CC", 
+                                "Gentoo" = "#008B8B")) +
+  # Labels and Titles
+  labs(
+    title = "Penguin Size Measurements",
+    subtitle = "Relationship between bill length and body mass across three species",
+    x = "Bill Length (mm)",
+    y = "Body Mass (g)",
+    color = "Species",
+    shape = "Species",
+    caption = "Data: Palmer Station LTER | Table: @allison_horst"
+  ) +
+  # Refine text and legend position
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    legend.position = "bottom"
+  )
+```
